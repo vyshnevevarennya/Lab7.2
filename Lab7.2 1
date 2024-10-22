@@ -1,0 +1,84 @@
+#include <iostream>
+#include <iomanip>
+#include <ctime> 
+
+using namespace std;
+
+
+void Create(int** t, const int n, const int Low, const int High);
+void Print(int** t, const int n);
+void Transpose(int** t, const int n);
+
+int main()
+{
+  
+    srand((unsigned)time(NULL));
+
+    int Low = -15; 
+    int High = 15; 
+
+    int n;
+    cout << "n = ";
+    cin >> n; 
+
+    // Створення динамічного квадратного масиву (матриці)
+    int** t = new int* [n];
+    for (int i = 0; i < n; i++)
+        t[i] = new int[n];
+
+    
+    Create(t, n, Low, High);
+    Print(t, n);
+
+    // Транспонування матриці
+    Transpose(t, n);
+    // Виведення транспонованої матриці
+    Print(t, n);
+
+    // Звільнення пам'яті, виділеної під динамічний масив
+    for (int i = 0; i < n; i++)
+        delete[] t[i];
+    delete[] t;
+
+    return 0;
+}
+
+
+void Create(int** t, const int n, const int Low, const int High)
+{
+    // Заповнення кожного елемента матриці випадковим числом в межах [Low, High]
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            t[i][j] = Low + rand() % (High - Low + 1);
+}
+
+
+void Print(int** t, const int n)
+{
+    cout << endl;
+    // Виведення кожного елемента матриці з відступом в 4 символи
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+            cout << setw(4) << t[i][j];
+        cout << endl; // Перехід на новий рядок після виведення рядка матриці
+    }
+    cout << endl;
+}
+
+// Функція транспонування матриці
+void Transpose(int** t, const int n)
+{
+    int tmp;
+    // Обмін елементів місцями по головній діагоналі
+    for (int i = 0; i < n; ++i)
+    {
+        for (int j = 0; j < i; ++j)
+        {
+            // Обмін значень елементів t[i][j] і t[j][i]
+            tmp = t[i][j];
+            t[i][j] = t[j][i];
+            t[j][i] = tmp;
+        }
+    }
+}
